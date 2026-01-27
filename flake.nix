@@ -29,14 +29,6 @@
       # Import host-specific information
       hostInfo = import ./host-info.nix;
 
-      # Helper function to apply macOS Sequoia workaround for GUI apps
-      # Refs: https://github.com/nix-darwin/nix-darwin/issues/1315
-      fixMacOSApp =
-        pkg:
-        pkg.overrideAttrs (old: {
-          installPhase = "whoami\n" + old.installPhase;
-        });
-
       # nix-darwin configuration (system-level, requires sudo)
       darwinConfiguration =
         { pkgs, ... }:
@@ -71,9 +63,13 @@
           };
           environment.shells = [ pkgs.fish ];
 
-          environment.systemPackages = [
-            pkgs.git
-            pkgs.fish
+          environment.systemPackages = with pkgs; [
+            git
+            fish
+            ice-bar
+            maccy
+            raycast
+            shottr
           ];
 
           # Ensure the default shell is set correctly
@@ -95,17 +91,21 @@
           home.homeDirectory = hostInfo.homedir;
 
           home.packages = with pkgs; [
-            git
+            bitwarden-desktop
+            brave
+            corepack_24
             nixfmt
             nil
-            nodejs-slim
-            podman
-            google-chrome
-            # GUI apps with macOS Sequoia workaround
-            (fixMacOSApp podman-desktop)
-            (fixMacOSApp shottr)
-            (fixMacOSApp warp-terminal)
+            nodejs_24
+            podman-compose
+            podman-desktop
+            warp-terminal
           ];
+
+          home.sessionVariables = {
+            EDITOR = "code --wait";
+            PODMAN_COMPOSE_WARNING_LOGS = "false";
+          };
 
           nixpkgs.overlays = [
             nix-vscode-extensions.overlays.default
@@ -116,7 +116,7 @@
 
           programs.vscode = {
             enable = true;
-            package = fixMacOSApp pkgs.vscode;
+            package = pkgs.vscode;
             profiles.default.extensions = with pkgs.vscode-marketplace; [
               dbaeumer.vscode-eslint
               eamodio.gitlens
@@ -144,6 +144,7 @@
                 };
               };
               "terminal.integrated.defaultProfile.osx" = "default";
+              "update.mode" = "none";
             };
           };
 
@@ -151,11 +152,17 @@
             enable = true;
             shellAliases = {
               "hm:switch" = "home-manager switch --flake ${hostInfo.flakedir}";
+              docker = "podman"; # Docker compatibility
             };
           };
 
-          home.sessionVariables = {
-            EDITOR = "code --wait";
+          services.podman = {
+            enable = true;
+            machines = {
+              "podman-machine-default" = {
+                autoStart = true;
+              };
+            };
           };
         };
     in

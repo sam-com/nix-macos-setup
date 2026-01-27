@@ -12,12 +12,47 @@ echo "[1/5] Installing Nix..."
 if command -v nix &> /dev/null; then
     echo "Nix is already installed. Skipping installation."
 else
-    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+    curl -fsSL https://install.determinate.systems/nix | sh -s -- install
     echo "Nix installed successfully!"
 fi
 echo ""
 
-# Step 2: Backup /etc files
+# Step 2: Check Full Disk Access for determinate-nixd
+echo "[2/5] Checking Full Disk Access permissions..."
+
+# Function to check if determinate-nixd has Full Disk Access
+check_full_disk_access() {
+    # Try to read a protected directory as a simple test
+    if sudo -u nobody ls /Library/Application\ Support/ &>/dev/null 2>&1; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Check if determinate-nixd exists
+if [ -f /usr/local/bin/determinate-nixd ] || [ -f /nix/var/nix/profiles/default/bin/determinate-nixd ]; then
+    echo "Found determinate-nixd daemon."
+    echo ""
+    echo "⚠️  IMPORTANT: Full Disk Access Required"
+    echo ""
+    echo "The Determinate Nix installer requires Full Disk Access to function properly."
+    echo "Without it, you may encounter 'operation not permitted' errors."
+    echo ""
+    echo "To grant Full Disk Access:"
+    echo "  1. Open System Settings"
+    echo "  2. Go to Privacy & Security → Full Disk Access"
+    echo "  3. Toggle ON the switch for 'determinate-nixd'"
+    echo "     (You may need to click the lock icon to make changes)"
+    echo ""
+    read -p "Press Enter after granting Full Disk Access, or press Ctrl+C to exit..."
+    echo ""
+else
+    echo "determinate-nixd not found. Skipping Full Disk Access check."
+fi
+echo ""
+
+# Step 3: Backup /etc files
 echo "[2/5] Backing up /etc files..."
 
 # Backup /etc/shells
@@ -41,8 +76,8 @@ else
 fi
 echo ""
 
-# Step 3: Capture system information
-echo "[3/5] Capturing system information..."
+# Step 4: Capture system information
+echo "[4/5] Capturing system information..."
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HOST_INFO_NIX="$SCRIPT_DIR/host-info.nix"
 
@@ -69,8 +104,8 @@ echo "  USER: $USER"
 echo "  HOME: $HOME"
 echo ""
 
-# Step 4: Run nix-darwin switch (system-level configuration)
-echo "[4/5] Running nix-darwin switch..."
+# Step 5: Run nix-darwin switch (system-level configuration)
+echo "[5/6] Running nix-darwin switch..."
 echo "This will configure system-level settings (requires sudo)"
 echo ""
 
@@ -85,8 +120,8 @@ echo ""
 echo "nix-darwin configuration applied successfully!"
 echo ""
 
-# Step 5: Run home-manager switch (user-level configuration)
-echo "[5/5] Running home-manager switch..."
+# Step 6: Run home-manager switch (user-level configuration)
+echo "[6/6] Running home-manager switch..."
 echo "This will configure user-level settings (no sudo required)"
 echo ""
 
