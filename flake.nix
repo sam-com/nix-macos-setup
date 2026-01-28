@@ -64,12 +64,20 @@
           environment.shells = [ pkgs.fish ];
 
           environment.systemPackages = with pkgs; [
+            bitwarden-desktop
+            btop
+            brave
             git
             fish
             ice-bar
             maccy
+            podman-desktop
             raycast
             shottr
+          ];
+
+          fonts.packages = with pkgs; [
+            nerd-fonts.jetbrains-mono
           ];
 
           # Ensure the default shell is set correctly
@@ -91,15 +99,12 @@
           home.homeDirectory = hostInfo.homedir;
 
           home.packages = with pkgs; [
-            bitwarden-desktop
-            brave
             corepack_24
+            gh
             nixfmt
             nil
             nodejs_24
             podman-compose
-            podman-desktop
-            warp-terminal
           ];
 
           home.sessionVariables = {
@@ -123,13 +128,15 @@
               esbenp.prettier-vscode
               jnoortheen.nix-ide
               mermaidchart.vscode-mermaid-chart
-
             ];
 
             profiles.default.userSettings = {
               "claudeCode.preferredLocation" = "panel";
               "editor.defaultFormatter" = "esbenp.prettier-vscode";
               "editor.formatOnSave" = true;
+              "editor.fontFamily" = "JetBrainsMono Nerd Font";
+              "editor.fontSize" = 13;
+              "editor.fontLigatures" = true;
               "nix.enableLanguageServer" = true;
               "nix.serverPath" = "${pkgs.nil}/bin/nil";
               "nix.formatterPath" = "nixfmt";
@@ -138,6 +145,8 @@
               };
               "window.nativeTabs" = true;
               "window.restoreWindows" = "preserve";
+              "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font";
+              "terminal.integrated.fontSize" = 13;
               "terminal.integrated.profiles.osx" = {
                 default = {
                   path = "${pkgs.fish}/bin/fish";

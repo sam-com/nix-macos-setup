@@ -9,10 +9,11 @@ A declarative macOS system configuration using [Nix](https://nixos.org/), [nix-d
 - **Version Control**: Track all system changes in git
 - **Easy Updates**: Simple commands to apply configuration changes
 - **Fish Shell**: Configured with useful aliases
-- **Development Tools**: Includes Git, Node.js, Corepack, and more
+- **Development Tools**: Includes Node.js, Corepack, GitHub CLI, Nix tooling, and more
 - **Docker-Compatible Container Runtime**: Podman with automatic machine startup and Docker CLI compatibility
-- **GUI Applications**: VSCode, Warp Terminal, Podman Desktop, and others
+- **GUI Applications**: Bitwarden, Brave, Podman Desktop, Raycast, and more - properly integrated using mac-app-util
 - **VSCode Extensions**: Pre-configured with essential extensions
+- **Custom Fonts**: JetBrains Mono Nerd Font for enhanced coding experience
 
 ## Prerequisites
 
@@ -64,7 +65,17 @@ Without Full Disk Access, you may encounter "operation not permitted" errors whe
 
 - Fish shell set as default shell
 - Touch ID for sudo authentication
-- System-level packages: Git, Fish, Ice Bar, Maccy, Raycast, Shottr
+- JetBrains Mono Nerd Font (used in VSCode)
+- System-level packages:
+  - Git, Fish
+  - Bitwarden Desktop (password manager)
+  - Brave Browser
+  - btop (system monitor)
+  - Ice Bar (menu bar management)
+  - Maccy (clipboard manager)
+  - Podman Desktop
+  - Raycast (productivity and launcher app)
+  - Shottr (screenshot tool)
 - System-level aliases:
   - `dr:switch` - Apply darwin-rebuild changes
 
@@ -72,25 +83,17 @@ Without Full Disk Access, you may encounter "operation not permitted" errors whe
 
 **Development Tools:**
 
-- Git
 - nixfmt (Nix formatter)
 - nil (Nix LSP)
 - Node.js 24
 - Corepack 24 (Node.js package manager manager)
+- GitHub CLI (gh) for GitHub integration
 - Podman with Docker compatibility
 - podman-compose (Docker Compose for Podman)
 
 **GUI Applications:**
 
 - Visual Studio Code (with extensions)
-- Bitwarden Desktop (password manager)
-- Brave Browser
-- Podman Desktop
-- Shottr (screenshot tool)
-- Warp Terminal
-- Ice Bar (menu bar management)
-- Maccy (clipboard manager)
-- Raycast (productivity and launcher app)
 
 **VSCode Extensions:**
 
@@ -105,6 +108,7 @@ Without Full Disk Access, you may encounter "operation not permitted" errors whe
 - Claude Code in panel location
 - Format on save enabled with Prettier as default formatter
 - Nix language server (nil) integration with nixfmt formatter
+- JetBrains Mono Nerd Font for editor and terminal (13pt with ligatures)
 - Fish shell integrated in terminal
 - Native tabs and window state preservation
 - Automatic updates disabled (managed by Nix)
@@ -120,9 +124,19 @@ Without Full Disk Access, you may encounter "operation not permitted" errors whe
 
 ## Usage
 
+### Updating Dependencies
+
+To update all flake inputs (nixpkgs, home-manager, nix-darwin, etc.) to their latest versions:
+
+```bash
+nix flake update
+```
+
+This updates the [flake.lock](flake.lock) file with the latest versions. After updating, apply the changes using the commands below.
+
 ### Applying Configuration Changes
 
-After modifying `flake.nix`, apply changes using:
+After modifying [flake.nix](flake.nix), apply changes using:
 
 **System-level changes** (requires sudo, use rarely):
 
@@ -251,6 +265,25 @@ After uninstallation, restart your terminal.
 ### "Operation not permitted" errors
 
 **Solution**: Grant Full Disk Access to `determinate-nixd` in System Settings (see installation step 3).
+
+### Git permissions errors ("insufficient permission for adding an object")
+
+**Problem**: When running `nix flake update` or other Git operations, you see errors like:
+
+```
+error: insufficient permission for adding an object to repository database .git/objects
+fatal: cannot create an empty blob in the object database
+```
+
+**Cause**: This typically happens when Git operations were previously run with `sudo`, creating files and directories owned by `root` in your `.git` directory.
+
+**Solution**: Fix the ownership of the `.git` directory:
+
+```bash
+sudo chown -R $USER:staff .git
+```
+
+Replace `$USER` with your username if the variable isn't set. After running this command, Git operations should work normally.
 
 ### Shell not changed after installation
 
