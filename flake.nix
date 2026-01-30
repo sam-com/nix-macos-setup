@@ -156,19 +156,22 @@
 
             profiles.default.userSettings = {
               "claudeCode.preferredLocation" = "panel";
+
               "editor.defaultFormatter" = "esbenp.prettier-vscode";
               "editor.formatOnSave" = true;
               "editor.fontFamily" = "JetBrainsMono Nerd Font";
               "editor.fontSize" = 13;
               "editor.fontLigatures" = true;
+
+              "git.confirmSync" = false;
+
               "nix.enableLanguageServer" = true;
               "nix.serverPath" = "${pkgs.nil}/bin/nil";
               "nix.formatterPath" = "nixfmt";
               "[nix]" = {
                 "editor.defaultFormatter" = "jnoortheen.nix-ide";
               };
-              "window.nativeTabs" = true;
-              "window.restoreWindows" = "preserve";
+
               "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font";
               "terminal.integrated.fontSize" = 13;
               "terminal.integrated.profiles.osx" = {
@@ -177,6 +180,10 @@
                 };
               };
               "terminal.integrated.defaultProfile.osx" = "default";
+
+              "window.nativeTabs" = true;
+              "window.restoreWindows" = "preserve";
+
               "update.mode" = "none";
             };
           };
