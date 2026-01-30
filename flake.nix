@@ -66,18 +66,8 @@
           environment.shells = [ pkgs.fish ];
 
           environment.systemPackages = with pkgs; [
-            bitwarden-desktop
-            btop
-            brave
-            ghostty-bin
             git
             fish
-            ice-bar
-            maccy
-            podman-desktop
-            raycast
-            shottr
-            warp-terminal
           ];
 
           fonts.packages = with pkgs; [
@@ -109,6 +99,7 @@
           home.homeDirectory = hostInfo.homedir;
 
           home.packages = with pkgs; [
+            # CLI tools
             corepack_24
             gh
             nixfmt
@@ -116,6 +107,19 @@
             nodejs_24
             podman-compose
             rbw
+            btop
+
+            # GUI Applications
+            bitwarden-desktop
+            brave
+            ghostty-bin
+            ice-bar
+            maccy
+            podman-desktop
+            raycast
+            rio
+            shottr
+            warp-terminal
           ];
 
           home.sessionVariables = {
@@ -133,13 +137,22 @@
           programs.vscode = {
             enable = true;
             package = pkgs.vscode;
-            profiles.default.extensions = with pkgs.vscode-marketplace; [
-              dbaeumer.vscode-eslint
-              eamodio.gitlens
-              esbenp.prettier-vscode
-              jnoortheen.nix-ide
-              mermaidchart.vscode-mermaid-chart
-            ];
+            profiles.default.extensions =
+              # Extensions from base nixpkgs (more stable, better maintained)
+              (with pkgs.vscode-extensions; [
+                christian-kohler.npm-intellisense
+                christian-kohler.path-intellisense
+                dbaeumer.vscode-eslint
+                eamodio.gitlens
+                esbenp.prettier-vscode
+                jnoortheen.nix-ide
+                pkief.material-icon-theme
+              ])
+              ++
+                # Extensions from nix-vscode-extensions marketplace
+                (with pkgs.vscode-marketplace; [
+                  mermaidchart.vscode-mermaid-chart
+                ]);
 
             profiles.default.userSettings = {
               "claudeCode.preferredLocation" = "panel";
@@ -184,6 +197,12 @@
               };
             };
           };
+
+          # Symlink Home Manager Apps to main Applications folder for visibility
+          home.activation.symlinkApplications = pkgs.lib.mkAfter ''
+            echo "Creating symlink to Home Manager Apps in /Applications..."
+            ln -sf "$HOME/Applications/Home Manager Apps" /Applications/ || true
+          '';
         };
     in
     {
