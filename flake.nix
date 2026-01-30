@@ -59,6 +59,8 @@
             enable = true;
             shellAliases = {
               "dr:switch" = "sudo -H darwin-rebuild switch --flake ${hostInfo.flakedir}";
+              "nix:install" = "${hostInfo.flakedir}/install.sh";
+              "nix:uninstall" = "${hostInfo.flakedir}/uninstall.sh";
             };
           };
           environment.shells = [ pkgs.fish ];
@@ -67,6 +69,7 @@
             bitwarden-desktop
             btop
             brave
+            ghostty-bin
             git
             fish
             ice-bar
@@ -74,16 +77,23 @@
             podman-desktop
             raycast
             shottr
+            warp-terminal
           ];
 
           fonts.packages = with pkgs; [
             nerd-fonts.jetbrains-mono
           ];
 
-          # Ensure the default shell is set correctly
+          # Ensure the default shell is set correctly (only if not already fish)
           system.activationScripts.postActivation.text = ''
-            echo "Setting default shell to fish..."
-            /usr/bin/chsh -s /run/current-system/sw/bin/fish ${hostInfo.username} || echo "Failed to change shell"
+            CURRENT_SHELL=$(dscl . -read /Users/${hostInfo.username} UserShell | awk '{print $2}')
+            FISH_PATH="/run/current-system/sw/bin/fish"
+            if [ "$CURRENT_SHELL" != "$FISH_PATH" ]; then
+              echo "Setting default shell to fish..."
+              /usr/bin/chsh -s "$FISH_PATH" ${hostInfo.username} || echo "Failed to change shell"
+            else
+              echo "Default shell is already fish, skipping chsh"
+            fi
           '';
         };
 
@@ -105,6 +115,7 @@
             nil
             nodejs_24
             podman-compose
+            rbw
           ];
 
           home.sessionVariables = {
