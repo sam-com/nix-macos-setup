@@ -129,6 +129,7 @@
             shottr
             slack
             spotify
+            warp-terminal
           ];
 
           home.sessionVariables = {
