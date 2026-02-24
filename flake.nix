@@ -28,6 +28,7 @@
     let
       # Import host-specific information
       hostInfo = import ./host-info.nix;
+      gitInfo = import ./git-info.nix;
 
       # nix-darwin configuration (system-level, requires sudo)
       darwinConfiguration =
@@ -137,10 +138,10 @@
             nix-vscode-extensions.overlays.default
           ];
 
-          programs.git = lib.optionalAttrs (hostInfo ? git) {
+          programs.git = lib.optionalAttrs (gitInfo ? name && gitInfo ? email) {
             enable = true;
-            settings.user.name = hostInfo.git.username;
-            settings.user.email = hostInfo.git.email;
+            settings.user.name = gitInfo.name;
+            settings.user.email = gitInfo.email;
           };
 
           # Let home-manager install and manage itself.
@@ -169,6 +170,8 @@
 
             profiles.default.userSettings = {
               "claudeCode.preferredLocation" = "panel";
+
+              "chat.viewSessions.orientation" = "stacked";
 
               "editor.defaultFormatter" = "esbenp.prettier-vscode";
               "editor.formatOnSave" = true;

@@ -43,7 +43,7 @@ if [ -f /usr/local/bin/determinate-nixd ] || [ -f /nix/var/nix/profiles/default/
     echo "  1. Open System Settings"
     echo "  2. Go to Privacy & Security → Full Disk Access"
     echo "  3. Toggle ON the switch for 'determinate-nixd'"
-    echo "     (You may need to click the lock icon to make changes)"
+    echo "     (You may need to click the lock icon to make changes. 'determinate-nixd' is usually located at /usr/local/bin/determinate-nixd)"
     echo ""
     read -p "Press Enter after granting Full Disk Access, or press Ctrl+C to exit..."
     echo ""
