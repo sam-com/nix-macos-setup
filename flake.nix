@@ -109,7 +109,6 @@
             nixfmt
             nil
             nodejs_24
-            openssh
             podman
             podman-compose
             python315
