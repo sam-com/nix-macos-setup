@@ -175,9 +175,11 @@
               "editor.fontFamily" = "JetBrainsMono Nerd Font";
               "editor.fontSize" = 13;
               "editor.fontLigatures" = true;
+              "editor.renderWhitespace" = "all";
 
-              "git.confirmSync" = false;
               "git.autofetch" = true;
+              "git.confirmSync" = false;
+              "git.pullBeforeSync" = true;
               "git.rebaseWhenSync" = true;
 
               "nix.enableLanguageServer" = true;
@@ -189,7 +191,7 @@
 
               "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font";
               "terminal.integrated.fontSize" = 13;
-              "terminal.integrated.defaultProfile.osx" = "default";
+              "terminal.integrated.defaultProfile.osx" = "fish";
               "terminal.integrated.hideOnLastClosed" = false;
 
               "window.nativeTabs" = true;
