@@ -215,11 +215,6 @@
             };
           };
 
-          services.podman = {
-            enable = true;
-            useDefaultMachine = true;
-          };
-
           # Symlink Home Manager Apps to main Applications folder for visibility
           home.activation.symlinkApplications = pkgs.lib.mkAfter ''
             echo "Creating symlink to Home Manager Apps in /Applications..."
