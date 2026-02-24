@@ -80,9 +80,11 @@ echo ""
 echo "[4/5] Capturing system information..."
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HOST_INFO_NIX="$SCRIPT_DIR/host-info.nix"
+GIT_INFO_NIX="$SCRIPT_DIR/git-info.nix"
 
-# Tell git to ignore local changes to this file (must be done before modifying)
+# Tell git to ignore local changes to these files (must be done before modifying)
 git update-index --skip-worktree "$HOST_INFO_NIX" 2>/dev/null || true
+git update-index --skip-worktree "$GIT_INFO_NIX" 2>/dev/null || true
 
 # Create Nix version for use in flake.nix
 cat > "$HOST_INFO_NIX" << EOF
