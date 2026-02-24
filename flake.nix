@@ -161,7 +161,6 @@
                 dbaeumer.vscode-eslint
                 esbenp.prettier-vscode
                 jnoortheen.nix-ide
-                mhutchie.git-graph
                 pkief.material-icon-theme
               ])
               ++
