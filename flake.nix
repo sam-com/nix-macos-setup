@@ -127,6 +127,7 @@
             raycast
             shottr
             slack
+            spotify
           ];
 
           home.sessionVariables = {
@@ -182,7 +183,6 @@
 
               "git.autofetch" = true;
               "git.confirmSync" = false;
-              "git.pullBeforeSync" = true;
               "git.rebaseWhenSync" = true;
 
               "nix.enableLanguageServer" = true;
