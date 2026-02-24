@@ -90,7 +90,7 @@
 
       # home-manager configuration (user-level, no sudo required)
       homeConfiguration =
-        { pkgs, ... }:
+        { lib, pkgs, ... }:
         {
           # this is internal compatibility configuration
           # for home-manager, don't change this!
@@ -137,6 +137,12 @@
             nix-vscode-extensions.overlays.default
           ];
 
+          programs.git = lib.optionalAttrs (hostInfo ? git) {
+            enable = true;
+            settings.user.name = hostInfo.git.username;
+            settings.user.email = hostInfo.git.email;
+          };
+
           # Let home-manager install and manage itself.
           programs.home-manager.enable = true;
 
@@ -146,6 +152,7 @@
             profiles.default.extensions =
               # Extensions from base nixpkgs (more stable, better maintained)
               (with pkgs.vscode-extensions; [
+                anthropic.claude-code
                 christian-kohler.npm-intellisense
                 christian-kohler.path-intellisense
                 dbaeumer.vscode-eslint
@@ -157,7 +164,6 @@
               ++
                 # Extensions from nix-vscode-extensions marketplace
                 (with pkgs.vscode-marketplace; [
-                  anthropic.claude-code
                   mermaidchart.vscode-mermaid-chart
                 ]);
 
@@ -183,15 +189,13 @@
 
               "terminal.integrated.fontFamily" = "JetBrainsMono Nerd Font";
               "terminal.integrated.fontSize" = 13;
-              "terminal.integrated.profiles.osx" = {
-                default = {
-                  path = "${pkgs.fish}/bin/fish";
-                };
-              };
               "terminal.integrated.defaultProfile.osx" = "default";
+              "terminal.integrated.hideOnLastClosed" = false;
 
               "window.nativeTabs" = true;
               "window.restoreWindows" = "preserve";
+
+              "workbench.iconTheme" = "material-icon-theme";
 
               "update.mode" = "none";
             };
