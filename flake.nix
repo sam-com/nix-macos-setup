@@ -106,6 +106,7 @@
             corepack_24
             gemini-cli
             gh
+            lazygit
             nixfmt
             nil
             nodejs_24
@@ -158,9 +159,9 @@
                 christian-kohler.npm-intellisense
                 christian-kohler.path-intellisense
                 dbaeumer.vscode-eslint
-                eamodio.gitlens
                 esbenp.prettier-vscode
                 jnoortheen.nix-ide
+                mhutchie.git-graph
                 pkief.material-icon-theme
               ])
               ++
@@ -182,6 +183,8 @@
               "editor.renderWhitespace" = "all";
 
               "git.autofetch" = true;
+              "git.blame.editorDecoration.enabled" = true;
+              "git.blame.statusBarItem.enabled" = true;
               "git.confirmSync" = false;
               "git.rebaseWhenSync" = true;
 
