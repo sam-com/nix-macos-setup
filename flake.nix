@@ -104,6 +104,7 @@
             # CLI tools
             claude-code
             corepack_24
+            gemini-cli
             gh
             nixfmt
             nil
