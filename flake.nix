@@ -68,6 +68,7 @@
           environment.systemPackages = with pkgs; [
             git
             fish
+            openssh
           ];
 
           fonts.packages = with pkgs; [
@@ -100,12 +101,16 @@
 
           home.packages = with pkgs; [
             # CLI tools
+            claude-code
             corepack_24
             gh
             nixfmt
             nil
             nodejs_24
+            openssh
+            podman
             podman-compose
+            python315
             rbw
             btop
 
@@ -113,13 +118,14 @@
             bitwarden-desktop
             brave
             ghostty-bin
+            google-chrome
             ice-bar
             maccy
             podman-desktop
+            postman
             raycast
-            rio
             shottr
-            warp-terminal
+            slack
           ];
 
           home.sessionVariables = {
@@ -151,6 +157,7 @@
               ++
                 # Extensions from nix-vscode-extensions marketplace
                 (with pkgs.vscode-marketplace; [
+                  anthropic.claude-code
                   mermaidchart.vscode-mermaid-chart
                 ]);
 
@@ -198,11 +205,7 @@
 
           services.podman = {
             enable = true;
-            machines = {
-              "podman-machine-default" = {
-                autoStart = true;
-              };
-            };
+            useDefaultMachine = true;
           };
 
           # Symlink Home Manager Apps to main Applications folder for visibility
