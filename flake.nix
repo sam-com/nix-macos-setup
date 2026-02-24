@@ -171,6 +171,8 @@
               "editor.fontLigatures" = true;
 
               "git.confirmSync" = false;
+              "git.autofetch" = true;
+              "git.rebaseWhenSync" = true;
 
               "nix.enableLanguageServer" = true;
               "nix.serverPath" = "${pkgs.nil}/bin/nil";
