@@ -102,6 +102,7 @@
 
           home.packages = with pkgs; [
             # CLI tools
+            btop
             claude-code
             corepack_24
             gemini-cli
@@ -114,7 +115,6 @@
             podman-compose
             python315
             rbw
-            btop
 
             # GUI Applications
             bitwarden-desktop
