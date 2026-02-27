@@ -143,6 +143,7 @@
 
           programs.git = lib.optionalAttrs (gitInfo ? name && gitInfo ? email) {
             enable = true;
+            settings.core.editor = "code --wait";
             settings.user.name = gitInfo.name;
             settings.user.email = gitInfo.email;
           };
